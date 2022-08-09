@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class CustomImageSlider extends StatelessWidget {
-  List<String> imgList;
-  List<String> nameList;
   List<Map> shoesList;
+  Function onChange;
 
   CustomImageSlider({
+    required this.onChange,
     required this.shoesList,
-    required this.imgList,
-    required this.nameList,
     Key? key,
   }) : super(key: key);
 
@@ -18,9 +16,7 @@ class CustomImageSlider extends StatelessWidget {
     return CarouselSlider(
       options: CarouselOptions(
         height: 200.0,
-        onPageChanged: (index, reason) {
-          print("$index");
-        },
+        onPageChanged: (index, reason) => {onChange(index, reason)},
       ),
       items: shoesList.map((item) {
         return Builder(
@@ -32,9 +28,9 @@ class CustomImageSlider extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    width: 1,
+                    width: 10,
                     color: (item['selected'] == true
-                        ? Colors.orange
+                        ? Colors.blueAccent
                         : Colors.black),
                   ),
                 ),

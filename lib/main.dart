@@ -93,10 +93,7 @@ class _LogInState extends State<LogIn> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  // const GpsTest(),
-                                  const MainPage(),
-                              // const RunDetail(),
+                              builder: (BuildContext context) => MainPage(),
                             ),
                           );
                         },

@@ -6,12 +6,11 @@ class CustomCircleAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      // ignore: prefer_const_literals_to_create_immutables
       children: [
         CircleAvatar(
           radius: 30.0,
           backgroundColor: Colors.white70,
-          child: Icon(Icons.account_circle),
+          child: Icon(Icons.account_circle, size: 40.0),
         ),
         Text("23.3k"),
       ],

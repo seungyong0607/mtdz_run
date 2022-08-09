@@ -65,7 +65,7 @@ class _InvenPageState extends State<InvenPage> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   elevation: 4.0, //그림자 깊이
-                  child: Image.asset('images/0.jpg', width: 180),
+                  child: Image.asset('images/0.png', width: 180),
                 ),
                 Card(
                   shape: RoundedRectangleBorder(
@@ -73,7 +73,7 @@ class _InvenPageState extends State<InvenPage> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   elevation: 4.0, //그림자 깊이
-                  child: Image.asset('images/1.jpg', width: 180),
+                  child: Image.asset('images/1.png', width: 180),
                 ),
               ],
             ),
@@ -86,7 +86,7 @@ class _InvenPageState extends State<InvenPage> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   elevation: 4.0, //그림자 깊이
-                  child: Image.asset('images/2.jpg', width: 180),
+                  child: Image.asset('images/2.png', width: 180),
                 ),
                 Card(
                   shape: RoundedRectangleBorder(
@@ -94,7 +94,7 @@ class _InvenPageState extends State<InvenPage> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   elevation: 4.0, //그림자 깊이
-                  child: Image.asset('images/3.jpg', width: 180),
+                  child: Image.asset('images/3.png', width: 180),
                 ),
               ],
             ),

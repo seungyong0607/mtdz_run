@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mtdz_run/common/CustomCircleAvatar.dart';
 
-class TopPart extends StatelessWidget {
-  const TopPart({Key? key}) : super(key: key);
+class TopPart extends StatefulWidget {
+  Map<String, dynamic> userInfo;
+  TopPart({
+    required this.userInfo,
+    Key? key,
+  }) : super(key: key);
 
+  @override
+  State<TopPart> createState() => _TopPartState();
+}
+
+class _TopPartState extends State<TopPart> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -37,7 +46,7 @@ class TopPart extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               SizedBox(
                 width: 20,
                 child: Icon(
@@ -45,7 +54,7 @@ class TopPart extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              Text("10"),
+              Text("${userInfo['coin']}"),
               SizedBox(
                 width: 20,
                 child: Icon(

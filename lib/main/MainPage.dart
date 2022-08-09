@@ -8,7 +8,7 @@ import 'package:mtdz_run/common/TopPart.dart';
 import 'package:mtdz_run/shop/ShopPage.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  MainPage({Key? key}) : super(key: key);
 
   @override
   State createState() => _BottomAppBarDemoState();
@@ -19,6 +19,8 @@ class _BottomAppBarDemoState extends State<MainPage> {
   bool _showNotch = true;
   FloatingActionButtonLocation _fabLocation =
       FloatingActionButtonLocation.endDocked;
+
+  int selectedIndex = 0;
 
   void _onShowNotchChanged(bool value) {
     setState(() {
@@ -38,19 +40,11 @@ class _BottomAppBarDemoState extends State<MainPage> {
     });
   }
 
-  final List<String> imgList = [
-    'images/0.jpg',
-    'images/1.jpg',
-    'images/2.jpg',
-    'images/3.jpg',
-  ];
-
-  final List<String> nameList = [
-    '신발1',
-    '신발2',
-    '신발3',
-    '신발4',
-  ];
+  final Map<String, dynamic> userInfo = {
+    "coin": 33.33,
+    "box": 0,
+    "key": 0,
+  };
 
   final List<Map> shoesList = [
     {
@@ -58,7 +52,7 @@ class _BottomAppBarDemoState extends State<MainPage> {
       'src': 'images/0.png',
       'type': 'Walker',
       'Lv': 24,
-      'durability': 100,
+      'durability': 12,
       'Efficiency': 17.0,
       'Luck': 8.6,
       'Comfort': 14.6,
@@ -70,7 +64,7 @@ class _BottomAppBarDemoState extends State<MainPage> {
       'src': 'images/1.png',
       'type': 'Walker',
       'Lv': 2,
-      'durability': 100,
+      'durability': 41,
       'Efficiency': 12.0,
       'Luck': 4.3,
       'Comfort': 11.1,
@@ -82,7 +76,7 @@ class _BottomAppBarDemoState extends State<MainPage> {
       'src': 'images/2.png',
       'type': 'Jogger',
       'Lv': 12,
-      'durability': 100,
+      'durability': 58,
       'Efficiency': 25.0,
       'Luck': 29.0,
       'Comfort': 7.3,
@@ -94,7 +88,7 @@ class _BottomAppBarDemoState extends State<MainPage> {
       'src': 'images/3.png',
       'type': 'Jogger',
       'Lv': 18,
-      'durability': 100,
+      'durability': 99,
       'Efficiency': 1.0,
       'Luck': 1.0,
       'Comfort': 1.0,
@@ -103,7 +97,15 @@ class _BottomAppBarDemoState extends State<MainPage> {
     },
   ];
 
-  void onChange() {}
+  void onChange(index, reason) {
+    setState(() {
+      shoesList.forEach((element) {
+        element['selected'] = false;
+      });
+      selectedIndex = index;
+      shoesList[index]['selected'] = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,18 +120,19 @@ class _BottomAppBarDemoState extends State<MainPage> {
           child: Column(
             children: <Widget>[
               const SizedBox(height: 10),
-              const TopPart(),
+              TopPart(
+                userInfo: userInfo,
+              ),
               const SizedBox(height: 30),
               CustomImageSlider(
+                onChange: onChange,
                 shoesList: shoesList,
-                imgList: imgList,
-                nameList: nameList,
               ),
               const SizedBox(
                 height: 20,
               ),
               MainGaugePart(
-                shoesList: shoesList,
+                shoes: shoesList[selectedIndex],
               ),
               const SizedBox(
                 height: 20,

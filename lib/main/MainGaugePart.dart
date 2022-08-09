@@ -2,40 +2,45 @@ import 'package:flutter/material.dart';
 
 class MainGaugePart extends StatelessWidget {
   bool _isRecording = true;
-  List shoesList;
+  Map<dynamic, dynamic> shoes;
 
   MainGaugePart({
-    required this.shoesList,
+    required this.shoes,
     Key? key,
   }) : super(key: key);
 
+//        'durability': 100,
+//       'Efficiency': 1.0,
+//       'Luck': 1.0,
+//       'Comfort': 1.0,
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          CustomIcons(
-            iconType: const Icon(Icons.timer, size: 40),
-            text: '76%',
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CustomIcons(
+          iconType: const Icon(
+            Icons.timer,
+            size: 40,
           ),
-          CustomIcons(
-            iconType: const Icon(
-              Icons.auto_awesome,
-              size: 40,
-            ),
-            text: '23%',
+          text: "${shoes['durability']}%",
+        ),
+        CustomIcons(
+          iconType: const Icon(
+            Icons.auto_awesome,
+            size: 40,
           ),
-          CustomIcons(
-            iconType: const Icon(Icons.local_fire_department, size: 40),
-            text: '51%',
-          ),
-          CustomIcons(
-            iconType: const Icon(Icons.fitness_center, size: 40),
-            text: '92%',
-          ),
-        ],
-      ),
+          text: "${shoes['Luck']}%",
+        ),
+        CustomIcons(
+          iconType: const Icon(Icons.local_fire_department, size: 40),
+          text: "${shoes['Efficiency']}%",
+        ),
+        CustomIcons(
+          iconType: const Icon(Icons.fitness_center, size: 40),
+          text: "${shoes['Comfort']}%",
+        ),
+      ],
     );
   }
 }
