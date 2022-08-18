@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mtdz_run/common/CustomAppbar.dart';
 
 class GachaPage extends StatefulWidget {
   const GachaPage({Key? key}) : super(key: key);
@@ -16,9 +17,7 @@ class _GachaPageState extends State<GachaPage> {
   Widget build(BuildContext context) {
     print(MediaQuery.of(context).size.width);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('인벤토리'),
-      ),
+      appBar: CustomAppbar(title: "Gacha"),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         // implement GridView.builder

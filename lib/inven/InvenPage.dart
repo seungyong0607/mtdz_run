@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mtdz_run/common/CustomAppbar.dart';
 import 'package:mtdz_run/common/TopPart.dart';
 
 class InvenPage extends StatefulWidget {
-  InvenPage({Key? key}) : super(key: key);
+  InvenPage({
+    // required this.userInfo,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<InvenPage> createState() => _InvenPageState();
@@ -12,13 +16,22 @@ class _InvenPageState extends State<InvenPage> {
   late List<bool> _isSelected = List.generate(3, (_) => false);
   late List<bool> _isSelected2 = List.generate(2, (_) => false);
 
+  // final Map<String, dynamic> userInfo = {
+  //   "coin": 33.33,
+  //   "box": 0,
+  //   "key": 0,
+  // };
+
+  final Map<String, dynamic> userInfo = {
+    "coin": 33.33,
+    "box": 0,
+    "key": 0,
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Inventory"),
-        centerTitle: true,
-      ),
+      appBar: CustomAppbar(title: "Inventory"),
       body: Center(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
@@ -26,7 +39,9 @@ class _InvenPageState extends State<InvenPage> {
             SizedBox(
               height: 14,
             ),
-            TopPart(),
+            TopPart(
+              userInfo: userInfo,
+            ),
             ToggleButtons(
               children: const <Widget>[
                 Text("Sneakers"),

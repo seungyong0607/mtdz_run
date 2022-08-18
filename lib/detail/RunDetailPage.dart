@@ -17,7 +17,13 @@ import 'GaugePart.dart';
 // }
 
 class RunDetail extends StatefulWidget {
-  const RunDetail({Key? key}) : super(key: key);
+  Map selectedItem;
+  // void changeUserInfo;
+  RunDetail({
+    Key? key,
+    required this.selectedItem,
+    // required this.changeUserInfo,
+  }) : super(key: key);
 
   @override
   State<RunDetail> createState() => _RunDetailState();
@@ -191,16 +197,12 @@ class _RunDetailState extends State<RunDetail> {
   }
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
-    //  22222222222222222222222222
-    print("2222222222 $event");
     setState(() {
       _status = event.status;
     });
   }
 
   void onPedestrianStatusError(error) {
-    print("333333333 $error");
-
     print('onPedestrianStatusError: $error');
     setState(() {
       _status = 'Pedestrian Status not available';
@@ -236,7 +238,12 @@ class _RunDetailState extends State<RunDetail> {
         backgroundColor: Colors.blue,
         elevation: 0.0,
         titleSpacing: 10,
-        leading: null,
+        leading: BackButton(
+          onPressed: () =>
+              // Navigator.pop(context, widget.changeUserInfo({"mater": 0, "key": 0, "box": 0})),
+              // Navigator.pop(context, {"mater": 0, "key": 0, "box": 0}),
+              Navigator.pop(context, 5),
+        ),
         title: Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
@@ -250,7 +257,8 @@ class _RunDetailState extends State<RunDetail> {
               width: 4,
             ),
             Text(
-              _status,
+              widget.selectedItem['name'].toString(),
+              // _status,
               style: const TextStyle(color: Colors.white),
             ),
           ],
@@ -270,6 +278,7 @@ class _RunDetailState extends State<RunDetail> {
           ),
           const SizedBox(height: 50),
           CenterDetail(
+            selectedItem: widget.selectedItem,
             time: time.toString(),
             speedInMps: speedInMps.toStringAsFixed(2).toString(),
             steps: _steps.toString(),

@@ -6,9 +6,11 @@ class CenterDetail extends StatelessWidget {
   late String steps;
   late String speedInMps;
   late String time;
+  late Map selectedItem;
   // late String gaugeType =
 
   CenterDetail({
+    required this.selectedItem,
     required this.steps,
     required this.speedInMps,
     required this.time,
@@ -56,38 +58,43 @@ class CenterDetail extends StatelessWidget {
               width: 130,
               height: 150,
               child: SfRadialGauge(axes: <RadialAxis>[
-                RadialAxis(minimum: 0, maximum: 4, ranges: <GaugeRange>[
-                  GaugeRange(
-                    startValue: GaugeValues[RunType.walking]["minStart"],
-                    endValue: GaugeValues[RunType.walking]["minEnd"],
-                    color: Colors.grey,
-                    startWidth: 10,
-                    endWidth: 10,
-                  ),
-                  GaugeRange(
-                    startValue: GaugeValues[RunType.walking]["rangeIn"],
-                    endValue: GaugeValues[RunType.walking]["rangeOut"],
-                    color: Colors.green,
-                    startWidth: 10,
-                    endWidth: 10,
-                  ),
-                  GaugeRange(
-                    startValue: 3.5,
-                    endValue: 4,
-                    color: Colors.grey,
-                    startWidth: 10,
-                    endWidth: 10,
-                  )
-                ], pointers: <GaugePointer>[
-                  NeedlePointer(value: double.parse(speedInMps))
-                ], annotations: <GaugeAnnotation>[
-                  GaugeAnnotation(
-                      widget: Text(speedInMps,
-                          style: const TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold)),
-                      angle: 90,
-                      positionFactor: 0.5)
-                ])
+                RadialAxis(
+                    minimum: selectedItem["minStart"],
+                    maximum: selectedItem["maxEnd"],
+                    ranges: <GaugeRange>[
+                      GaugeRange(
+                        startValue: selectedItem["minStart"],
+                        endValue: selectedItem["minEnd"],
+                        color: Colors.grey,
+                        startWidth: 10,
+                        endWidth: 10,
+                      ),
+                      GaugeRange(
+                        startValue: selectedItem["rangeIn"],
+                        endValue: selectedItem["rangeOut"],
+                        color: Colors.green,
+                        startWidth: 10,
+                        endWidth: 10,
+                      ),
+                      GaugeRange(
+                        startValue: selectedItem["maxStart"],
+                        endValue: selectedItem["maxEnd"],
+                        color: Colors.grey,
+                        startWidth: 10,
+                        endWidth: 10,
+                      )
+                    ],
+                    pointers: <GaugePointer>[
+                      NeedlePointer(value: double.parse(speedInMps))
+                    ],
+                    annotations: <GaugeAnnotation>[
+                      GaugeAnnotation(
+                          widget: Text(speedInMps,
+                              style: const TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.bold)),
+                          angle: 90,
+                          positionFactor: 0.5)
+                    ])
               ]),
             ),
           ],

@@ -15,7 +15,7 @@ class CustomImageSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        height: 200.0,
+        height: 350.0,
         onPageChanged: (index, reason) => {onChange(index, reason)},
       ),
       items: shoesList.map((item) {
@@ -37,7 +37,19 @@ class CustomImageSlider extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.symmetric(horizontal: 5.0),
                 // decoration: BoxDecoration(color: Colors.amber),
-                child: Image.asset(item['src'], fit: BoxFit.cover),
+                child: Column(
+                  children: [
+                    Text(item['name']),
+                    Text('type: ${item['type']}'),
+                    Image.asset(
+                      item['src'],
+                      width: 400,
+                      height: 250,
+                    ),
+                    Text('level :${item['level']}'),
+                    Text('durability :${item['durability']}'),
+                  ],
+                ),
               ),
             );
           },
@@ -46,3 +58,7 @@ class CustomImageSlider extends StatelessWidget {
     );
   }
 }
+
+
+//  'Lv': 12,
+//       'durability': 58,

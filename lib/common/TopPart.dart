@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mtdz_run/common/CustomCircleAvatar.dart';
 
 class TopPart extends StatefulWidget {
-  Map<String, dynamic> userInfo;
+  Map<dynamic, dynamic> userInfo;
   TopPart({
     required this.userInfo,
     Key? key,
@@ -44,34 +44,37 @@ class _TopPartState extends State<TopPart> {
               ),
             ],
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 20,
-                child: Icon(
-                  Icons.currency_bitcoin,
-                  color: Colors.black,
+          child: Container(
+            width: 200,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  width: 20,
+                  child: Icon(
+                    Icons.currency_bitcoin,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              Text("${userInfo['coin']}"),
-              SizedBox(
-                width: 20,
-                child: Icon(
-                  Icons.currency_franc,
-                  color: Colors.black,
+                Text(widget.userInfo['coin'].toString()),
+                SizedBox(
+                  width: 20,
+                  child: Icon(
+                    Icons.home_repair_service,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              Text("102,000"),
-              SizedBox(
-                width: 20,
-                child: Icon(
-                  Icons.currency_pound,
-                  color: Colors.black,
+                Text(widget.userInfo['box'].toString()),
+                SizedBox(
+                  width: 20,
+                  child: Icon(
+                    Icons.key_outlined,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              Text("10,000"),
-            ],
+                Text(widget.userInfo['key'].toString()),
+              ],
+            ),
           ),
         )
       ],
