@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mtdz_run/common/TopPart.dart';
 import 'package:mtdz_run/gacha/GachaPage.dart';
 import 'package:mtdz_run/inven/InvenPage.dart';
 import 'package:mtdz_run/main/SliderPage.dart';
@@ -83,6 +84,12 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: TopPart(),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+      ),
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

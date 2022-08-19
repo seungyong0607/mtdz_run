@@ -16,6 +16,10 @@ class _InvenPageState extends State<InvenPage> {
   late List<bool> _isSelected = List.generate(3, (_) => false);
   late List<bool> _isSelected2 = List.generate(2, (_) => false);
 
+  final List<Map> myProducts =
+      List.generate(4, (index) => {"id": index, "name": "shoes #$index"})
+          .toList();
+
   // final Map<String, dynamic> userInfo = {
   //   "coin": 33.33,
   //   "box": 0,
@@ -31,16 +35,13 @@ class _InvenPageState extends State<InvenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(title: "Inventory"),
+      // appBar: CustomAppbar(title: "Inventory"),
       body: Center(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               height: 14,
-            ),
-            TopPart(
-              userInfo: userInfo,
             ),
             ToggleButtons(
               children: const <Widget>[
@@ -74,42 +75,115 @@ class _InvenPageState extends State<InvenPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Card(
-                  shape: RoundedRectangleBorder(
-                    //모서리를 둥글게 하기 위해 사용
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  elevation: 4.0, //그림자 깊이
-                  child: Image.asset('images/0.png', width: 180),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.roller_skating,
+                          color: Colors.blue,
+                          size: 20.0,
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text("Jogger"),
+                      ],
+                    ),
+                    Expanded(
+                      child: Image.asset('images/${myProducts[0]["id"]}.png'),
+                      flex: 2,
+                    ),
+                    Text("${myProducts[0]["name"]}"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        SizedBox(
+                          width: 20,
+                          child: Icon(
+                            Icons.currency_bitcoin,
+                            color: Colors.black,
+                            size: 14,
+                          ),
+                        ),
+                        Text("1"),
+                        SizedBox(
+                          width: 20,
+                          child: Icon(
+                            Icons.currency_franc,
+                            color: Colors.black,
+                            size: 14,
+                          ),
+                        ),
+                        Text("12"),
+                        SizedBox(
+                          width: 20,
+                          child: Icon(
+                            Icons.currency_pound,
+                            color: Colors.black,
+                            size: 14,
+                          ),
+                        ),
+                        Text("6"),
+                      ],
+                    ),
+                  ],
                 ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    //모서리를 둥글게 하기 위해 사용
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  elevation: 4.0, //그림자 깊이
-                  child: Image.asset('images/1.png', width: 180),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Card(
-                  shape: RoundedRectangleBorder(
-                    //모서리를 둥글게 하기 위해 사용
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  elevation: 4.0, //그림자 깊이
-                  child: Image.asset('images/2.png', width: 180),
-                ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    //모서리를 둥글게 하기 위해 사용
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  elevation: 4.0, //그림자 깊이
-                  child: Image.asset('images/3.png', width: 180),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.roller_skating,
+                          color: Colors.blue,
+                          size: 20.0,
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text("Jogger"),
+                      ],
+                    ),
+                    Expanded(
+                      child: Image.asset('images/${myProducts[1]["id"]}.png'),
+                      flex: 2,
+                    ),
+                    Text("${myProducts[1]["name"]}"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        SizedBox(
+                          width: 20,
+                          child: Icon(
+                            Icons.currency_bitcoin,
+                            color: Colors.black,
+                            size: 14,
+                          ),
+                        ),
+                        Text("1"),
+                        SizedBox(
+                          width: 20,
+                          child: Icon(
+                            Icons.currency_franc,
+                            color: Colors.black,
+                            size: 14,
+                          ),
+                        ),
+                        Text("12"),
+                        SizedBox(
+                          width: 20,
+                          child: Icon(
+                            Icons.currency_pound,
+                            color: Colors.black,
+                            size: 14,
+                          ),
+                        ),
+                        Text("6"),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),

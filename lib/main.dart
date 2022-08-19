@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mtdz_run/main/MainPage.dart';
+import 'package:mtdz_run/main/SliderPage.dart';
 // import 'package:mtdz_run/GpsTest.dart';
 
 void main() => runApp(MyApp());
@@ -9,10 +10,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'MTDZ Run',
       debugShowCheckedModeBanner: false,
-      home: LogIn(),
+      // home: LogIn(),
+      initialRoute: '/login',
+      routes: {
+        '/': (context) => MainPage(),
+        '/login': (context) => LogIn(),
+        '/sliderPage': (context) => SliderPage(),
+      },
     );
   }
 }
@@ -28,23 +35,9 @@ class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Log in'),
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.menu),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Padding(
               padding: EdgeInsets.only(top: 50),
@@ -90,13 +83,14 @@ class _LogInState extends State<LogIn> {
                           primary: Colors.orangeAccent,
                         ),
                         onPressed: () {
-                          debugPrint('push');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => MainPage(),
-                            ),
-                          );
+                          Navigator.of(context).pushNamed('/', arguments: 1);
+
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (BuildContext context) => MainPage(),
+                          //   ),
+                          // );
                         },
                         child: const Icon(
                           Icons.arrow_forward,

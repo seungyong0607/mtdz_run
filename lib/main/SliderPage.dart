@@ -6,10 +6,8 @@ import 'package:mtdz_run/main/MainGaugePart.dart';
 import 'package:mtdz_run/main/MainPageFooterPart.dart';
 
 class SliderPage extends StatefulWidget {
-  late int? testNumber;
   SliderPage({
     Key? key,
-    this.testNumber,
   }) : super(key: key);
 
   @override
@@ -17,20 +15,6 @@ class SliderPage extends StatefulWidget {
 }
 
 class _SliderPageState extends State<SliderPage> {
-  @override
-  didChangeDependencies() {
-    // 부모의 initState호출
-
-    setState(() {
-      userInfo['box'] += widget.testNumber == null ? 5 : 10;
-    });
-
-    debugPrint(
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ${userInfo['box']}"); // 이 클래스애 리스너 추가
-
-    super.didChangeDependencies();
-  }
-
   List<Map> shoesList = [
     {
       'name': 'shoes #1',
@@ -120,32 +104,13 @@ class _SliderPageState extends State<SliderPage> {
     });
   }
 
-  final Map<dynamic, dynamic> userInfo = {
-    "mater": 0.0,
-    "coin": 43,
-    "box": 0,
-    "key": 0,
-  };
-
-  void changeUserInfo() async {
-    print("value");
-    setState(() {
-      // userInfo['mater'] += value['mater'];
-      // userInfo['box'] += value['box'];
-      // userInfo['key'] += value['key'];
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(title: "Main"),
+      // appBar: CustomAppbar(title: "Main"),
       body: Column(
         children: <Widget>[
           const SizedBox(height: 10),
-          TopPart(
-            userInfo: userInfo,
-          ),
           const SizedBox(height: 30),
           CustomImageSlider(
             onChange: onChange,
@@ -161,7 +126,6 @@ class _SliderPageState extends State<SliderPage> {
             height: 20,
           ),
           MainPageFooterPart(
-            changeUserInfo: changeUserInfo,
             selectedItem: selectedItem,
           ),
         ],

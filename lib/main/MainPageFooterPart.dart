@@ -3,11 +3,11 @@ import 'package:mtdz_run/detail/RunDetailPage.dart';
 
 class MainPageFooterPart extends StatefulWidget {
   Map selectedItem;
-  final VoidCallback changeUserInfo;
+  // final Function changeUserInfo;
 
   MainPageFooterPart({
     Key? key,
-    required this.changeUserInfo,
+    // required this.changeUserInfo,
     required this.selectedItem,
   }) : super(key: key);
 
@@ -24,8 +24,8 @@ class _MainPageFooterPartState extends State<MainPageFooterPart> {
           width: 200,
           height: 50,
           child: ElevatedButton(
-            onPressed: () async {
-              await Navigator.push(
+            onPressed: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => RunDetail(
@@ -33,7 +33,7 @@ class _MainPageFooterPartState extends State<MainPageFooterPart> {
                     // changeUserInfo: widget.changeUserInfo,
                   ),
                 ),
-              ).then((value) => {widget.changeUserInfo()});
+              );
             },
             style: ElevatedButton.styleFrom(),
             child: const Text("Start"),

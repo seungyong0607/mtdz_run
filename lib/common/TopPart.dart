@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mtdz_run/common/CustomCircleAvatar.dart';
 
 class TopPart extends StatefulWidget {
-  Map<dynamic, dynamic> userInfo;
+  Map<dynamic, dynamic>? userInfo;
   TopPart({
-    required this.userInfo,
+    this.userInfo,
     Key? key,
   }) : super(key: key);
 
@@ -13,12 +13,27 @@ class TopPart extends StatefulWidget {
 }
 
 class _TopPartState extends State<TopPart> {
+  final Map<dynamic, dynamic> userInfo = {
+    "mater": 0.0,
+    "coin": 103,
+    "box": 0,
+    "key": 0,
+  };
+
+  void changeUserInfo(nextInfo) async {
+    setState(() {
+      userInfo['mater'] += nextInfo['mater'];
+      userInfo['box'] += nextInfo['box'];
+      userInfo['key'] += nextInfo['key'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CustomCircleAvatar(),
+        const CustomCircleAvatar(),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -49,35 +64,60 @@ class _TopPartState extends State<TopPart> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 20,
                   child: Icon(
                     Icons.currency_bitcoin,
                     color: Colors.black,
                   ),
                 ),
-                Text(widget.userInfo['coin'].toString()),
-                SizedBox(
+                _CustorText(
+                  text: userInfo['coin'].toString(),
+                ),
+                const SizedBox(
                   width: 20,
                   child: Icon(
                     Icons.home_repair_service,
                     color: Colors.black,
                   ),
                 ),
-                Text(widget.userInfo['box'].toString()),
-                SizedBox(
+                _CustorText(
+                  text: userInfo['box'].toString(),
+                ),
+                const SizedBox(
                   width: 20,
                   child: Icon(
                     Icons.key_outlined,
                     color: Colors.black,
                   ),
                 ),
-                Text(widget.userInfo['key'].toString()),
+                _CustorText(
+                  text: userInfo['key'].toString(),
+                ),
               ],
             ),
           ),
         )
       ],
+    );
+  }
+}
+
+class _CustorText extends StatelessWidget {
+  final String text;
+  const _CustorText({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+      ),
     );
   }
 }

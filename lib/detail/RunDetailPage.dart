@@ -172,6 +172,7 @@ class _RunDetailState extends State<RunDetail> {
   void initState() {
     super.initState();
     initPlatformState();
+    _determinePosition();
   }
 
   @override
@@ -197,12 +198,16 @@ class _RunDetailState extends State<RunDetail> {
   }
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
+    //  22222222222222222222222222
+    print("2222222222 $event");
     setState(() {
       _status = event.status;
     });
   }
 
   void onPedestrianStatusError(error) {
+    print("333333333 $error");
+
     print('onPedestrianStatusError: $error');
     setState(() {
       _status = 'Pedestrian Status not available';
@@ -239,10 +244,16 @@ class _RunDetailState extends State<RunDetail> {
         elevation: 0.0,
         titleSpacing: 10,
         leading: BackButton(
-          onPressed: () =>
-              // Navigator.pop(context, widget.changeUserInfo({"mater": 0, "key": 0, "box": 0})),
-              // Navigator.pop(context, {"mater": 0, "key": 0, "box": 0}),
-              Navigator.pop(context, 5),
+          onPressed: () => Navigator.pop(context, {
+            "mater": meter.toInt(),
+            "key": 2,
+            "box": 3,
+            // "key": keyGaugeValue.toInt(),
+            // "box": boxGaugeValue.toInt(),
+          }),
+          // Navigator.pop(context, widget.changeUserInfo({"mater": 0, "key": 0, "box": 0})),
+          // Navigator.pop(context, {"mater": 0, "key": 0, "box": 0}),
+          // Navigator.pop(context, false),
         ),
         title: Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
