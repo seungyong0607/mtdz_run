@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:mtdz_run/inven/DetailScreen.dart';
+import 'package:page_transition/page_transition.dart';
 
 class CustomImageSlider extends StatelessWidget {
   List<Map> shoesList;
@@ -23,7 +25,13 @@ class CustomImageSlider extends StatelessWidget {
           builder: (BuildContext context) {
             return new GestureDetector(
               onTap: () {
-                print("d");
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    child: DetailScreen(item: item),
+                  ),
+                );
               },
               child: Container(
                 decoration: BoxDecoration(

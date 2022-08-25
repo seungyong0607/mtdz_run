@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:get/get.dart';
+import 'package:mtdz_run/controller/UserController.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:geolocator/geolocator.dart';
 // import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-import 'Top.dart';
+import 'RunDetailTopPart.dart';
 import 'Run.dart';
 import 'CenterDetail.dart';
 import 'Footer.dart';
@@ -18,11 +20,9 @@ import 'GaugePart.dart';
 
 class RunDetail extends StatefulWidget {
   Map selectedItem;
-  // void changeUserInfo;
   RunDetail({
     Key? key,
     required this.selectedItem,
-    // required this.changeUserInfo,
   }) : super(key: key);
 
   @override
@@ -30,6 +30,7 @@ class RunDetail extends StatefulWidget {
 }
 
 class _RunDetailState extends State<RunDetail> {
+  final Controller controller = Get.put(Controller());
   Timer? timer; // 정식 타이머
 
   Position? _position;
@@ -41,7 +42,7 @@ class _RunDetailState extends State<RunDetail> {
 
   bool _flag = false; // play 버튼
   double speedInMps = 0; // 현재 스피드
-  String _status = '?'; // 현재 걷고 있는 상태
+  String _status = 'unde'; // 현재 걷고 있는 상태
   int _steps = 0; // 총 발걸음
   int adrenaline = 0; // 게이지가 차면 +1 적립
   int tempTime = 0; // 다음 위치 발생시까지 초를 기록
@@ -60,6 +61,83 @@ class _RunDetailState extends State<RunDetail> {
   late StreamSubscription _getPositionSubscription;
   late Stream<StepCount> _stepCountStream;
   late Stream<PedestrianStatus> _pedestrianStatusStream;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+        elevation: 0.0,
+        titleSpacing: 10,
+        leading: BackButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: <Widget>[
+            const ClipRect(
+              child: Icon(
+                Icons.run_circle,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Text(
+              // widget.selectedItem['name'].toString(),
+              _status,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: <Widget>[
+          RunDetailTopPart(
+            meterGauge: meterGauge,
+            meter: meter,
+            meterTemp: meterTemp,
+            adrenaline: adrenaline,
+            gaugeCountValue: GAUGE_COUNT_VALUE,
+            energyCount: ENERGY_COUNT,
+            energyGaugeValue: energyGaugeValue,
+            energyValue: energyValue,
+          ),
+          const SizedBox(height: 50),
+          CenterDetail(
+            selectedItem: widget.selectedItem,
+            time: time.toString(),
+            speedInMps: speedInMps.toStringAsFixed(2).toString(),
+            steps: _steps.toString(),
+          ),
+          const SizedBox(height: 10),
+          Run(
+            meter: meter,
+            meterTemp: meterTemp,
+            status: _status,
+          ),
+          GaugePart(
+            boxCount: boxCount,
+            keyCount: keyCount,
+            boxGaugeValue: boxGaugeValue,
+            keyGaugeValue: keyGaugeValue,
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          Footer(
+            play: play,
+            flag: _flag,
+          ),
+        ],
+      ),
+    );
+  }
 
   void _startTimer() {
     timer = Timer.periodic(
@@ -106,6 +184,8 @@ class _RunDetailState extends State<RunDetail> {
         boxGaugeValue = 0;
         boxCount++;
       });
+
+      controller.boxCountUpdate();
     }
 
     if (keyGaugeValue >= 10) {
@@ -113,6 +193,8 @@ class _RunDetailState extends State<RunDetail> {
         keyGaugeValue = 0;
         keyCount++;
       });
+
+      controller.keyCountUpdate();
     }
   }
 
@@ -121,9 +203,15 @@ class _RunDetailState extends State<RunDetail> {
       desiredAccuracy: LocationAccuracy.high,
     );
 
+    final location = await Geolocator.getCurrentPosition();
+
+    // print("ddddddddddddddddddddddddddd $location");
+    // 수정 예정
+
     _getPositionSubscription =
         Geolocator.getPositionStream().listen((position) {
-      if (_status == 'walking') {
+      // if (_status != 'walking') {
+      if (true) {
         meterTemp = (tempTime * double.parse(speedInMps.toStringAsFixed(2)));
 
         setState(() {
@@ -132,19 +220,23 @@ class _RunDetailState extends State<RunDetail> {
           meterTemp;
           meter += meterTemp;
           meterGauge += meterTemp;
-          boxGaugeValue += meterTemp * 1.5;
-          keyGaugeValue += meterTemp * 1.1;
+          boxGaugeValue += meterTemp * 5.5;
+          keyGaugeValue += meterTemp * 5.1;
         });
 
         checkMeter();
         checkMeterGauge();
-      } else {
-        setState(() {
-          speedInMps = 0.0;
-          tempTime = 0;
-          // meter = (5 * double.parse(speedInMps.toStringAsFixed(2)));
-        });
       }
+      // else {
+      //   print("_status : $_status");
+      //   print("_status : $_status");
+
+      //   setState(() {
+      //     speedInMps = 0.0;
+      //     tempTime = 0;
+      //     // meter = (5 * double.parse(speedInMps.toStringAsFixed(2)));
+      //   });
+      // }
     });
 
     setState(() {
@@ -181,15 +273,13 @@ class _RunDetailState extends State<RunDetail> {
       timer!.cancel();
     }
 
-    // _getPositionSubscription.cancel();
-
+    // _inputStore();
     super.dispose();
   }
 
   void onStepCount(StepCount event) {
     if (_flag) {
       setState(() {
-        // _steps = event.steps.toString();
         _steps;
       });
 
@@ -198,7 +288,6 @@ class _RunDetailState extends State<RunDetail> {
   }
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
-    //  22222222222222222222222222
     print("2222222222 $event");
     setState(() {
       _status = event.status;
@@ -232,90 +321,6 @@ class _RunDetailState extends State<RunDetail> {
     }
 
     if (!mounted) return;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0,
-        titleSpacing: 10,
-        leading: BackButton(
-          onPressed: () => Navigator.pop(context, {
-            "mater": meter.toInt(),
-            "key": 2,
-            "box": 3,
-            // "key": keyGaugeValue.toInt(),
-            // "box": boxGaugeValue.toInt(),
-          }),
-          // Navigator.pop(context, widget.changeUserInfo({"mater": 0, "key": 0, "box": 0})),
-          // Navigator.pop(context, {"mater": 0, "key": 0, "box": 0}),
-          // Navigator.pop(context, false),
-        ),
-        title: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: <Widget>[
-            const ClipRect(
-              child: Icon(
-                Icons.run_circle,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(
-              width: 4,
-            ),
-            Text(
-              widget.selectedItem['name'].toString(),
-              // _status,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ],
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          Top(
-            meterGauge: meterGauge,
-            meter: meter,
-            meterTemp: meterTemp,
-            adrenaline: adrenaline,
-            gaugeCountValue: GAUGE_COUNT_VALUE,
-            energyCount: ENERGY_COUNT,
-            energyGaugeValue: energyGaugeValue,
-            energyValue: energyValue,
-          ),
-          const SizedBox(height: 50),
-          CenterDetail(
-            selectedItem: widget.selectedItem,
-            time: time.toString(),
-            speedInMps: speedInMps.toStringAsFixed(2).toString(),
-            steps: _steps.toString(),
-          ),
-          const SizedBox(height: 10),
-          Run(
-            meter: meter,
-            meterTemp: meterTemp,
-            status: _status,
-          ),
-          GaugePart(
-            boxCount: boxCount,
-            keyCount: keyCount,
-            boxGaugeValue: boxGaugeValue,
-            keyGaugeValue: keyGaugeValue,
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Footer(
-            play: play,
-            flag: _flag,
-          ),
-        ],
-      ),
-    );
   }
 
   void play() {

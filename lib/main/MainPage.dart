@@ -21,11 +21,12 @@ class _MainPageState extends State<MainPage> {
   //   "key": 0,
   // };
 
-  final List<Map> shoesList = [
+  final List<Map<dynamic, dynamic>> shoesList = [
     {
       'name': 'shoes #1',
       'src': 'images/0.png',
       'type': 'Walker',
+      'icon': 'roller_skating',
       'Lv': 24,
       'durability': 12,
       'Efficiency': 17.0,
@@ -38,6 +39,7 @@ class _MainPageState extends State<MainPage> {
       'name': 'shoes #2',
       'src': 'images/1.png',
       'type': 'Walker',
+      'icon': 'roller_skating',
       'Lv': 2,
       'durability': 41,
       'Efficiency': 12.0,
@@ -50,6 +52,7 @@ class _MainPageState extends State<MainPage> {
       'name': 'shoes #3',
       'src': 'images/2.png',
       'type': 'Jogger',
+      'icon': 'roller_skating',
       'Lv': 12,
       'durability': 58,
       'Efficiency': 25.0,
@@ -62,6 +65,7 @@ class _MainPageState extends State<MainPage> {
       'name': 'shoes #4',
       'src': 'images/3.png',
       'type': 'Jogger',
+      'icon': 'roller_skating',
       'Lv': 18,
       'durability': 99,
       'Efficiency': 1.0,
@@ -72,17 +76,68 @@ class _MainPageState extends State<MainPage> {
     },
   ];
 
-  final pages = [
-    SliderPage(),
-    InvenPage(),
-    GachaPage(),
-    ShopPage(),
+  final List<Map<dynamic, dynamic>> boxList = [
+    {
+      'name': 'box #1',
+      'icon': Icons.home_repair_service,
+      'color': Colors.blue,
+      'grade': 'N',
+      'selected': true,
+      'count': 5,
+      'needKey': 1,
+    },
+    {
+      'name': 'box #2',
+      'icon': Icons.home_repair_service,
+      'color': Colors.redAccent,
+      'grade': 'R',
+      'selected': true,
+      'count': 10,
+      'needKey': 2,
+    },
+    {
+      'name': 'box #3',
+      'icon': Icons.home_repair_service,
+      'color': Colors.yellow,
+      'grade': 'SR',
+      'selected': true,
+      'count': 3,
+      'needKey': 5,
+    },
+    {
+      'name': 'box #4',
+      'icon': Icons.home_repair_service,
+      'color': Colors.black,
+      'grade': 'UR',
+      'selected': true,
+      'count': 4,
+      'needKey': 7,
+    },
+    {
+      'name': 'box #5',
+      'icon': Icons.home_repair_service,
+      'color': Colors.green,
+      'grade': 'L',
+      'selected': true,
+      'count': 5,
+      'needKey': 10,
+    },
   ];
 
   onChangeSelectedItem() {}
 
   @override
   Widget build(BuildContext context) {
+    final pages = [
+      SliderPage(),
+      InvenPage(
+        shoesList: shoesList,
+        boxList: boxList,
+      ),
+      GachaPage(),
+      ShopPage(),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: TopPart(),
@@ -90,7 +145,14 @@ class _MainPageState extends State<MainPage> {
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
-      body: pages[currentIndex],
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 400,
+          ),
+          child: pages[currentIndex],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.blue,

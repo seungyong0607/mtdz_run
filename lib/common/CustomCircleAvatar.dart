@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
-  const CustomCircleAvatar({Key? key}) : super(key: key);
+  final double mater;
+  const CustomCircleAvatar({
+    Key? key,
+    required this.mater,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,7 @@ class CustomCircleAvatar extends StatelessWidget {
           child: Icon(Icons.account_circle, size: 30.0),
         ),
         Text(
-          "23.3k",
+          "${mater}",
           style: TextStyle(
             fontSize: 14,
             color: Colors.black,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mtdz_run/main/MainPage.dart';
 import 'package:mtdz_run/main/SliderPage.dart';
 // import 'package:mtdz_run/GpsTest.dart';
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'MTDZ Run',
       debugShowCheckedModeBanner: false,
       // home: LogIn(),

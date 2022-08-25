@@ -1,194 +1,157 @@
 import 'package:flutter/material.dart';
 import 'package:mtdz_run/common/CustomAppbar.dart';
-import 'package:mtdz_run/common/TopPart.dart';
+
+import 'package:group_button/group_button.dart';
+import 'package:mtdz_run/inven/BoxList.dart';
+import 'package:mtdz_run/inven/DetailScreen.dart';
+import 'package:page_transition/page_transition.dart';
 
 class InvenPage extends StatefulWidget {
-  InvenPage({
-    // required this.userInfo,
+  const InvenPage({
     Key? key,
+    required this.shoesList,
+    required this.boxList,
   }) : super(key: key);
+
+  final List<Map<dynamic, dynamic>> shoesList;
+  final List<Map<dynamic, dynamic>> boxList;
 
   @override
   State<InvenPage> createState() => _InvenPageState();
 }
 
 class _InvenPageState extends State<InvenPage> {
-  late List<bool> _isSelected = List.generate(3, (_) => false);
-  late List<bool> _isSelected2 = List.generate(2, (_) => false);
+  late List<Map<dynamic, dynamic>> filterShoesList = widget.shoesList;
+  late List<Map<dynamic, dynamic>> filterBoxList = widget.boxList;
 
-  final List<Map> myProducts =
-      List.generate(4, (index) => {"id": index, "name": "shoes #$index"})
-          .toList();
+  List<String> tabs = ["Sneakers", "Box"];
+  List<String> shoesTypeTabs = ["Jogger", "Walker"];
 
-  // final Map<String, dynamic> userInfo = {
-  //   "coin": 33.33,
-  //   "box": 0,
-  //   "key": 0,
-  // };
+  String selectedTab = 'Sneakers';
+  String shoesType = '';
+  String boxType = '';
 
-  final Map<String, dynamic> userInfo = {
-    "coin": 33.33,
-    "box": 0,
-    "key": 0,
-  };
+  final controller = GroupButtonController(selectedIndex: 0);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(filterShoesList);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppbar(title: "Inventory"),
-      body: Center(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 14,
-            ),
-            ToggleButtons(
-              children: const <Widget>[
-                Text("Sneakers"),
-                Text("Game"),
-                Text("Badges"),
-              ],
-              constraints: BoxConstraints(
-                  minWidth: (MediaQuery.of(context).size.width - 36) / 3),
-              onPressed: (int index) {
-                setState(() {
-                  _isSelected[index] = !_isSelected[index];
-                });
-              },
-              isSelected: _isSelected,
-            ),
-            ToggleButtons(
-              children: const <Widget>[
-                Text("Sneakers"),
-                Text("Shoeboxes"),
-              ],
-              constraints: BoxConstraints(
-                  minWidth: (MediaQuery.of(context).size.width - 36) / 2),
-              onPressed: (int index) {
-                setState(() {
-                  _isSelected2[index] = !_isSelected2[index];
-                });
-              },
-              isSelected: _isSelected2,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
+      // appBar: CustomAppbar(title: "Gacha"),
+      body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          // implement GridView.builder
+          child: Column(
+            children: [
+              Flexible(
+                flex: 2,
+                child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.roller_skating,
-                          color: Colors.blue,
-                          size: 20.0,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text("Jogger"),
-                      ],
+                    GroupButton(
+                      buttons: tabs,
+                      controller: controller,
+                      onSelected: ((value, index, isSelected) {
+                        setState(() {
+                          selectedTab = value.toString();
+                        });
+                      }),
                     ),
-                    Expanded(
-                      child: Image.asset('images/${myProducts[0]["id"]}.png'),
-                      flex: 2,
-                    ),
-                    Text("${myProducts[0]["name"]}"),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(
-                          width: 20,
-                          child: Icon(
-                            Icons.currency_bitcoin,
-                            color: Colors.black,
-                            size: 14,
-                          ),
-                        ),
-                        Text("1"),
-                        SizedBox(
-                          width: 20,
-                          child: Icon(
-                            Icons.currency_franc,
-                            color: Colors.black,
-                            size: 14,
-                          ),
-                        ),
-                        Text("12"),
-                        SizedBox(
-                          width: 20,
-                          child: Icon(
-                            Icons.currency_pound,
-                            color: Colors.black,
-                            size: 14,
-                          ),
-                        ),
-                        Text("6"),
-                      ],
-                    ),
+                    if (selectedTab == 'Sneakers' || selectedTab == '')
+                      GroupButton(
+                        buttons: shoesTypeTabs,
+                        onSelected: ((value, index, isSelected) {
+                          setState(() {
+                            shoesType = value.toString();
+                            filterShoesList = widget.shoesList.where((element) {
+                              return element['type'] == shoesType;
+                            }).toList();
+                          });
+                        }),
+                      ),
                   ],
                 ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.roller_skating,
-                          color: Colors.blue,
-                          size: 20.0,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text("Jogger"),
-                      ],
-                    ),
-                    Expanded(
-                      child: Image.asset('images/${myProducts[1]["id"]}.png'),
-                      flex: 2,
-                    ),
-                    Text("${myProducts[1]["name"]}"),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(
-                          width: 20,
-                          child: Icon(
-                            Icons.currency_bitcoin,
-                            color: Colors.black,
-                            size: 14,
-                          ),
-                        ),
-                        Text("1"),
-                        SizedBox(
-                          width: 20,
-                          child: Icon(
-                            Icons.currency_franc,
-                            color: Colors.black,
-                            size: 14,
-                          ),
-                        ),
-                        Text("12"),
-                        SizedBox(
-                          width: 20,
-                          child: Icon(
-                            Icons.currency_pound,
-                            color: Colors.black,
-                            size: 14,
-                          ),
-                        ),
-                        Text("6"),
-                      ],
-                    ),
-                  ],
+              ),
+              if (selectedTab == 'Sneakers' && shoesType != '')
+                _customFlexView(list: filterShoesList),
+              if (selectedTab == 'Box')
+                BoxList(
+                  list: filterBoxList,
                 ),
-              ],
-            ),
-          ],
+              if (selectedTab == 'Sneakers' && shoesType == '')
+                _customFlexView(list: widget.shoesList),
+            ],
+          )),
+    );
+  }
+}
+
+class _customFlexView extends StatelessWidget {
+  final List list;
+  const _customFlexView({
+    Key? key,
+    required this.list,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 8,
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 180,
+          childAspectRatio: 1,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 40,
         ),
+        itemCount: list.length,
+        itemBuilder: (BuildContext ctx, index) {
+          return Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    child: DetailScreen(item: list[index]),
+                  ),
+                );
+              },
+              child: Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Icon(
+                    //   // ['${list['$index']["icon"]}']
+                    //   ${list['$index']["icon"] == 'd' ? Icons.abc_outlined : Icons.abc_outlined } ,
+                    //   color: Colors.blue,
+                    //   size: 20.0,
+                    // ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text('${list[index]["type"]}'),
+                  ],
+                ),
+                Expanded(
+                  child: Image.asset('${list[index]["src"]}'),
+                  flex: 2,
+                ),
+                Text("${list[index]["name"]}"),
+              ]),
+            ),
+          );
+        },
       ),
     );
   }

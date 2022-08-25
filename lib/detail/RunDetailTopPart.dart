@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class Top extends StatelessWidget {
+class RunDetailTopPart extends StatelessWidget {
   double meter;
   double meterTemp;
   double meterGauge;
@@ -13,7 +13,7 @@ class Top extends StatelessWidget {
   int gaugeCountValue; // (Run)
   int adrenaline;
 
-  Top({
+  RunDetailTopPart({
     required this.meter,
     required this.meterTemp,
     required this.meterGauge,
@@ -43,7 +43,7 @@ class Top extends StatelessWidget {
                   ),
                   Text('${meterGauge.toStringAsFixed(2)}/$gaugeCountValue'),
                   Text(
-                    '+$meterTemp',
+                    '+${meterTemp.toStringAsFixed(2)}',
                     style: const TextStyle(
                       color: Colors.amber,
                       fontSize: 16,
@@ -105,11 +105,11 @@ class Top extends StatelessWidget {
                 maximum: energyCount.toDouble(),
                 ranges: [
                   // 빨간색 선
-                  LinearGaugeRange(
-                    startValue: 0,
-                    endValue: energyGaugeValue,
-                    // endValue: energyCount.toDouble(),
-                  ),
+                  // LinearGaugeRange(
+                  //   startValue: 0,
+                  //   endValue: energyGaugeValue,
+                  //   // endValue: energyCount.toDouble(),
+                  // ),
                 ],
                 markerPointers: [
                   // 포인터

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mtdz_run/common/CustomCircleAvatar.dart';
+import 'package:mtdz_run/controller/UserController.dart';
+import 'package:get/get.dart';
 
 class TopPart extends StatefulWidget {
-  Map<dynamic, dynamic>? userInfo;
-  TopPart({
-    this.userInfo,
+  const TopPart({
     Key? key,
   }) : super(key: key);
 
@@ -13,27 +13,18 @@ class TopPart extends StatefulWidget {
 }
 
 class _TopPartState extends State<TopPart> {
-  final Map<dynamic, dynamic> userInfo = {
-    "mater": 0.0,
-    "coin": 103,
-    "box": 0,
-    "key": 0,
-  };
-
-  void changeUserInfo(nextInfo) async {
-    setState(() {
-      userInfo['mater'] += nextInfo['mater'];
-      userInfo['box'] += nextInfo['box'];
-      userInfo['key'] += nextInfo['key'];
-    });
-  }
+  final Controller controller = Get.put(Controller());
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const CustomCircleAvatar(),
+        GetX<Controller>(
+          builder: (_) => CustomCircleAvatar(
+            mater: controller.user().mater.toDouble(),
+          ),
+        ),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -71,8 +62,10 @@ class _TopPartState extends State<TopPart> {
                     color: Colors.black,
                   ),
                 ),
-                _CustorText(
-                  text: userInfo['coin'].toString(),
+                GetX<Controller>(
+                  builder: (_) => _CustorText(
+                    text: '${controller.user().coin}',
+                  ),
                 ),
                 const SizedBox(
                   width: 20,
@@ -81,8 +74,10 @@ class _TopPartState extends State<TopPart> {
                     color: Colors.black,
                   ),
                 ),
-                _CustorText(
-                  text: userInfo['box'].toString(),
+                GetX<Controller>(
+                  builder: (_) => _CustorText(
+                    text: '${controller.user().box}',
+                  ),
                 ),
                 const SizedBox(
                   width: 20,
@@ -91,8 +86,10 @@ class _TopPartState extends State<TopPart> {
                     color: Colors.black,
                   ),
                 ),
-                _CustorText(
-                  text: userInfo['key'].toString(),
+                GetX<Controller>(
+                  builder: (_) => _CustorText(
+                    text: '${controller.user().key}',
+                  ),
                 ),
               ],
             ),
