@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mtdz_run/main/MainPage.dart';
 import 'package:mtdz_run/main/SliderPage.dart';
+import 'package:mtdz_run/mypage/MyPage.dart';
+import 'package:mtdz_run/mypage/RecordPage.dart';
 // import 'package:mtdz_run/GpsTest.dart';
 
 void main() => runApp(MyApp());
@@ -20,6 +22,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => MainPage(),
         '/login': (context) => LogIn(),
         '/sliderPage': (context) => SliderPage(),
+        '/myPage': (context) => MyPage(),
+        '/recordPage': (context) => RecordPage(),
       },
     );
   }

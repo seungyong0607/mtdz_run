@@ -42,7 +42,7 @@ class _RunDetailState extends State<RunDetail> {
 
   bool _flag = false; // play 버튼
   double speedInMps = 0; // 현재 스피드
-  String _status = 'unde'; // 현재 걷고 있는 상태
+  String _status = ''; // 현재 걷고 있는 상태
   int _steps = 0; // 총 발걸음
   int adrenaline = 0; // 게이지가 차면 +1 적립
   int tempTime = 0; // 다음 위치 발생시까지 초를 기록
@@ -89,10 +89,11 @@ class _RunDetailState extends State<RunDetail> {
               width: 4,
             ),
             Text(
-              // widget.selectedItem['name'].toString(),
-              _status,
+              widget.selectedItem['name'].toString(),
+              // _status,
               style: const TextStyle(color: Colors.white),
             ),
+            Text(_status),
           ],
         ),
       ),
@@ -144,10 +145,15 @@ class _RunDetailState extends State<RunDetail> {
       const Duration(seconds: 1),
       (timer) {
         // time = time + 1;
+        energyGaugeValue--;
+
+        if (energyGaugeValue <= -1) {
+          energyGaugeValue = 10;
+        }
         setState(() {
           tempTime++;
           time++;
-          energyGaugeValue--;
+          energyGaugeValue;
         });
 
         if (time % 10 == 0) {
@@ -203,15 +209,10 @@ class _RunDetailState extends State<RunDetail> {
       desiredAccuracy: LocationAccuracy.high,
     );
 
-    final location = await Geolocator.getCurrentPosition();
-
-    // print("ddddddddddddddddddddddddddd $location");
-    // 수정 예정
-
+    // final location = await Geolocator.getCurrentPosition();
     _getPositionSubscription =
         Geolocator.getPositionStream().listen((position) {
-      // if (_status != 'walking') {
-      if (true) {
+      if (_status == 'walking') {
         meterTemp = (tempTime * double.parse(speedInMps.toStringAsFixed(2)));
 
         setState(() {
@@ -220,23 +221,21 @@ class _RunDetailState extends State<RunDetail> {
           meterTemp;
           meter += meterTemp;
           meterGauge += meterTemp;
-          boxGaugeValue += meterTemp * 5.5;
-          keyGaugeValue += meterTemp * 5.1;
+          boxGaugeValue += meterTemp * 2;
+          keyGaugeValue += meterTemp * 3;
         });
+
+        controller.meterUpdate(meterTemp);
 
         checkMeter();
         checkMeterGauge();
+      } else {
+        setState(() {
+          speedInMps = 0.0;
+          tempTime = 0;
+          // meter = (5 * double.parse(speedInMps.toStringAsFixed(2)));
+        });
       }
-      // else {
-      //   print("_status : $_status");
-      //   print("_status : $_status");
-
-      //   setState(() {
-      //     speedInMps = 0.0;
-      //     tempTime = 0;
-      //     // meter = (5 * double.parse(speedInMps.toStringAsFixed(2)));
-      //   });
-      // }
     });
 
     setState(() {

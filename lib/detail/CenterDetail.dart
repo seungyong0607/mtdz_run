@@ -24,7 +24,7 @@ class CenterDetail extends StatelessWidget {
       children: <Widget>[
         SizedBox(
           width: 70,
-          height: 180,
+          height: 226,
           child: Column(
             children: <Widget>[
               Text(
@@ -55,10 +55,11 @@ class CenterDetail extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 130,
-              height: 150,
-              child: SfRadialGauge(axes: <RadialAxis>[
-                RadialAxis(
+              width: 200,
+              height: 200,
+              child: SfRadialGauge(
+                axes: <RadialAxis>[
+                  RadialAxis(
                     minimum: selectedItem["minStart"],
                     maximum: selectedItem["maxEnd"],
                     ranges: <GaugeRange>[
@@ -87,21 +88,26 @@ class CenterDetail extends StatelessWidget {
                     pointers: <GaugePointer>[
                       NeedlePointer(value: double.parse(speedInMps))
                     ],
-                    annotations: <GaugeAnnotation>[
-                      GaugeAnnotation(
-                          widget: Text(speedInMps,
-                              style: const TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.bold)),
-                          angle: 90,
-                          positionFactor: 0.5)
-                    ])
-              ]),
+                    // annotations: <GaugeAnnotation>[
+                    //   GaugeAnnotation(
+                    //     widget: Text(
+                    //       speedInMps,
+                    //       style: const TextStyle(
+                    //           fontSize: 25, fontWeight: FontWeight.bold),
+                    //     ),
+                    //     angle: 90,
+                    //     positionFactor: 0.5,
+                    //   ),
+                    // ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
         SizedBox(
           width: 70,
-          height: 180,
+          height: 226,
           child: Column(
             children: <Widget>[
               Text(

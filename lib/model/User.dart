@@ -1,9 +1,9 @@
 class User {
   User({
     this.coin = 0,
-    this.key = 10,
-    this.box = 10,
-    this.mater = 23.2,
+    this.box = 27,
+    this.key = 21,
+    this.mater = 0.0,
   });
 
   int coin;

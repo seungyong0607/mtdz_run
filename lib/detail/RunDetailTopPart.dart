@@ -90,14 +90,14 @@ class RunDetailTopPart extends StatelessWidget {
                     color: Colors.blue,
                   ),
                   Text('Energy $energyValue/$energyCount'),
-                  Text(
-                    (adrenaline == 0 ? '' : '-$adrenaline'),
-                    style: const TextStyle(
-                      color: Colors.blueAccent,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  // Text(
+                  //   (adrenaline == 0 ? '' : '-$adrenaline'),
+                  //   style: const TextStyle(
+                  //     color: Colors.blueAccent,
+                  //     fontSize: 16,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
                 ],
               ),
               SfLinearGauge(
@@ -107,8 +107,7 @@ class RunDetailTopPart extends StatelessWidget {
                   // 빨간색 선
                   // LinearGaugeRange(
                   //   startValue: 0,
-                  //   endValue: energyGaugeValue,
-                  //   // endValue: energyCount.toDouble(),
+                  //   endValue: energyGaugeValue.toDouble(),
                   // ),
                 ],
                 markerPointers: [

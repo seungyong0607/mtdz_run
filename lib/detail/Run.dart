@@ -19,7 +19,7 @@ class Run extends StatelessWidget {
         Text(
           meter.toStringAsFixed(2),
           style: const TextStyle(
-            fontSize: 60,
+            fontSize: 30,
           ),
         ),
         const Text(

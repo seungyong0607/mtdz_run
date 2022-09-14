@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mtdz_run/mypage/MyPage.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
   final double mater;
@@ -13,10 +14,16 @@ class CustomCircleAvatar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CircleAvatar(
-          radius: 16.0,
-          backgroundColor: Colors.white70,
-          child: Icon(Icons.account_circle, size: 30.0),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed('/myPage');
+            // Navigator.push(context, MyPage());
+          },
+          child: CircleAvatar(
+            radius: 16.0,
+            backgroundColor: Colors.white70,
+            child: Icon(Icons.account_circle, size: 30.0),
+          ),
         ),
         Text(
           "${mater}",

@@ -26,4 +26,12 @@ class Controller extends GetxController {
       val?.key++;
     });
   }
+
+  void meterUpdate(meter) {
+    meter = user().mater + meter;
+    meter = double.parse(meter.toStringAsFixed(1));
+    user.update((val) {
+      val?.mater = meter;
+    });
+  }
 }

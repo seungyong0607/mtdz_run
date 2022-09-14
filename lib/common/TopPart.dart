@@ -63,7 +63,7 @@ class _TopPartState extends State<TopPart> {
                   ),
                 ),
                 GetX<Controller>(
-                  builder: (_) => _CustorText(
+                  builder: (_) => _CustomText(
                     text: '${controller.user().coin}',
                   ),
                 ),
@@ -75,7 +75,7 @@ class _TopPartState extends State<TopPart> {
                   ),
                 ),
                 GetX<Controller>(
-                  builder: (_) => _CustorText(
+                  builder: (_) => _CustomText(
                     text: '${controller.user().box}',
                   ),
                 ),
@@ -87,7 +87,7 @@ class _TopPartState extends State<TopPart> {
                   ),
                 ),
                 GetX<Controller>(
-                  builder: (_) => _CustorText(
+                  builder: (_) => _CustomText(
                     text: '${controller.user().key}',
                   ),
                 ),
@@ -100,9 +100,9 @@ class _TopPartState extends State<TopPart> {
   }
 }
 
-class _CustorText extends StatelessWidget {
+class _CustomText extends StatelessWidget {
   final String text;
-  const _CustorText({
+  const _CustomText({
     Key? key,
     required this.text,
   }) : super(key: key);

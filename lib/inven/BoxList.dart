@@ -68,7 +68,8 @@ class _BoxListState extends State<BoxList> {
                     context,
                     needKey: widget.list[index]['needKey'],
                     grade: widget.list[index]['grade'],
-                    userInfo: controller.user(),
+                    key: controller.user().key,
+                    boxCount: widget.list[index]['count'],
                   );
 
                   if (callbackValue != null) {
@@ -95,42 +96,30 @@ class _BoxListState extends State<BoxList> {
                 Expanded(
                   child: Icon(
                     widget.list[index]['icon'],
-                    color: widget.list[index]['color'],
                     size: 100.0,
+                    color: widget.list[index]['color'],
                   ),
                   flex: 2,
                 ),
-                Text("${widget.list[index]["name"]}"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    SizedBox(
-                      width: 20,
+                  children: [
+                    Text("${widget.list[index]["name"]}"),
+                    Text(" x ${widget.list[index]['count'].toString()}"),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("필요"),
+                    const SizedBox(
+                      width: 24,
                       child: Icon(
-                        Icons.currency_bitcoin,
+                        Icons.key_outlined,
                         color: Colors.black,
-                        size: 14,
                       ),
                     ),
-                    Text("1"),
-                    SizedBox(
-                      width: 20,
-                      child: Icon(
-                        Icons.currency_franc,
-                        color: Colors.black,
-                        size: 14,
-                      ),
-                    ),
-                    Text("12"),
-                    SizedBox(
-                      width: 20,
-                      child: Icon(
-                        Icons.currency_pound,
-                        color: Colors.black,
-                        size: 14,
-                      ),
-                    ),
-                    Text("6"),
+                    Text(widget.list[index]['needKey'].toString()),
                   ],
                 ),
               ]),
@@ -214,11 +203,16 @@ class _BoxListState extends State<BoxList> {
     BuildContext context, {
     required needKey,
     required grade,
-    required userInfo,
+    required boxCount,
+    required key,
   }) {
     late double _currentSliderValue = 1;
 
-    final maxValue = (userInfo.key / needKey).toInt();
+    int keyValue = (key / needKey).toInt();
+    int tempInt = boxCount - keyValue;
+
+    final maxValue = tempInt > 0 ? keyValue : boxCount;
+    // final maxValue = 1;
 
     return showDialog(
       context: context,
@@ -227,7 +221,7 @@ class _BoxListState extends State<BoxList> {
           height: 140,
           child: Column(
             children: [
-              Text('오픈할 상자의 개수 선택'),
+              const Text('오픈할 상자의 개수 선택'),
               Text('상자당 열쇠 $needKey개 필요'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
