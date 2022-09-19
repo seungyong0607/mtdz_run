@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mtdz_run/database/drift_database.dart';
 
 class RecordPage extends StatelessWidget {
   const RecordPage({super.key});
@@ -18,18 +20,44 @@ class RecordPage extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.only(left: 16.0, right: 16.0, top: 12),
-                child: ListView.builder(
-                  itemCount: 100,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: _RecordCard(
-                        activeTime: DateTime.now(),
-                        startDateTime: "12/07 18:36",
-                        meter: 3,
-                      ),
-                    );
-                  },
-                ),
+                child: FutureBuilder<List<Record>>(
+                    future: GetIt.I<LocalDatabase>().getRecord(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+
+                      if (snapshot.hasData && snapshot.data!.isEmpty) {
+                        return const Center(
+                          child: Text("There is no record."),
+                        );
+                      }
+
+                      return ListView.separated(
+                        itemCount: snapshot.data!.length,
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            height: 2.0,
+                          );
+                        },
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  '/recordDetailPage',
+                                  arguments: index + 1);
+                            },
+                            child: Container(
+                              child: _RecordCard(
+                                activeTime: DateTime.now(),
+                                startDateTime: "12/07 18:36",
+                                meter: 3,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }),
               ),
             )
           ],

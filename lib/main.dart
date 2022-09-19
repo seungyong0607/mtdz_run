@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mtdz_run/database/drift_database.dart';
 import 'package:mtdz_run/main/MainPage.dart';
 import 'package:mtdz_run/main/SliderPage.dart';
+import 'package:mtdz_run/model/Movements.dart';
 import 'package:mtdz_run/mypage/MyPage.dart';
+import 'package:mtdz_run/mypage/RecordDetailPage.dart';
 import 'package:mtdz_run/mypage/RecordPage.dart';
-// import 'package:mtdz_run/GpsTest.dart';
 
-void main() => runApp(MyApp());
+import 'package:intl/date_symbol_data_local.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDateFormatting(); // 다국어 설정 (날짜)
+
+  final database = LocalDatabase();
+
+  // 어떤타입인지 지정을 하고 database 인스턴스를 넣어준다.
+  GetIt.I.registerSingleton<LocalDatabase>(database);
+
+  final records = await database.getRecord();
+  print("records $records");
+
+  return runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -24,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/sliderPage': (context) => SliderPage(),
         '/myPage': (context) => MyPage(),
         '/recordPage': (context) => RecordPage(),
+        '/recordDetailPage': (context) => RecordDetailPage(),
       },
     );
   }
@@ -87,7 +107,12 @@ class _LogInState extends State<LogIn> {
                           minimumSize: const Size(90, 42),
                           primary: Colors.orangeAccent,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          final data = await getDatabase();
+                          data.forEach((e) {
+                            print('xddddd $e');
+                          });
+
                           Navigator.of(context).pushNamed('/', arguments: 1);
 
                           // Navigator.push(
@@ -112,5 +137,14 @@ class _LogInState extends State<LogIn> {
         ),
       ),
     );
+  }
+
+  getDatabase() async {
+    // final database = LocalDatabase();
+    // 어떤타입인지 지정을 하고 database 인스턴스를 넣어준다.
+    final data = await GetIt.I<LocalDatabase>().getMovements();
+    // print("ddddd $data");
+
+    return data;
   }
 }

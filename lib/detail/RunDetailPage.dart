@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:get/get.dart';
-import 'package:mtdz_run/controller/UserController.dart';
-
+// import 'package:get/get.dart';
+// import 'package:mtdz_run/controller/UserController.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:geolocator/geolocator.dart';
 // import 'package:syncfusion_flutter_gauges/gauges.dart';
+
+import 'package:get_it/get_it.dart';
+import 'package:mtdz_run/database/drift_database.dart';
+import 'package:drift/drift.dart' show Value;
 
 import 'RunDetailTopPart.dart';
 import 'Run.dart';
@@ -30,7 +33,9 @@ class RunDetail extends StatefulWidget {
 }
 
 class _RunDetailState extends State<RunDetail> {
-  final Controller controller = Get.put(Controller());
+  late int tableId;
+
+  // final Controller controller = Get.put(Controller());
   Timer? timer; // 정식 타이머
 
   Position? _position;
@@ -191,7 +196,7 @@ class _RunDetailState extends State<RunDetail> {
         boxCount++;
       });
 
-      controller.boxCountUpdate();
+      // controller.boxCountUpdate();
     }
 
     if (keyGaugeValue >= 10) {
@@ -200,7 +205,7 @@ class _RunDetailState extends State<RunDetail> {
         keyCount++;
       });
 
-      controller.keyCountUpdate();
+      // controller.keyCountUpdate();
     }
   }
 
@@ -212,7 +217,19 @@ class _RunDetailState extends State<RunDetail> {
     // final location = await Geolocator.getCurrentPosition();
     _getPositionSubscription =
         Geolocator.getPositionStream().listen((position) {
+      print("DDSDSD ${position.latitude}");
+      GetIt.I<LocalDatabase>().updateRecord(
+        MovementsCompanion(
+          id: Value(tableId),
+          lat: Value(position.latitude.toString()),
+          long: Value(position.longitude.toString()),
+          speed: Value(position.speed.toStringAsFixed(2)),
+        ),
+      );
+
       if (_status == 'walking') {
+        // 여기 들어감
+
         meterTemp = (tempTime * double.parse(speedInMps.toStringAsFixed(2)));
 
         setState(() {
@@ -225,7 +242,7 @@ class _RunDetailState extends State<RunDetail> {
           keyGaugeValue += meterTemp * 3;
         });
 
-        controller.meterUpdate(meterTemp);
+        // controller.meterUpdate(meterTemp);
 
         checkMeter();
         checkMeterGauge();
@@ -322,7 +339,7 @@ class _RunDetailState extends State<RunDetail> {
     if (!mounted) return;
   }
 
-  void play() {
+  void play() async {
     setState(() {
       _flag = !_flag;
     });
@@ -341,6 +358,17 @@ class _RunDetailState extends State<RunDetail> {
         _steps = 0;
       });
     } else {
+      DateTime focusedDay = DateTime.now();
+
+      tableId = await GetIt.I<LocalDatabase>().createRecord(
+        RecordsCompanion(
+          startTime: Value(focusedDay),
+          // endTime: Value(focusedDay),
+          // elaspedTime: Value(focusedDay),
+          // check: Value(true),
+        ),
+      );
+
       _startTimer();
       _getCurrentLocation();
     }

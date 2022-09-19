@@ -46,7 +46,6 @@ class _recordPart extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed('/myPage');
         Navigator.of(context).pushNamed('/recordPage');
       },
       child: SizedBox(
