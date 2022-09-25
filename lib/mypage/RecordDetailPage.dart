@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get_it/get_it.dart';
@@ -5,6 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mtdz_run/database/drift_database.dart';
 import 'package:mtdz_run/mypage/RecordModal.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 class RecordDetailPage extends StatefulWidget {
   const RecordDetailPage({
@@ -17,27 +22,7 @@ class RecordDetailPage extends StatefulWidget {
 
 class _RecordDetailPageState extends State<RecordDetailPage> {
   late Future<List<Polyline>> polylines;
-
-  // Future<List<Polyline>> getPolylines() async {
-  //   final data = await GetIt.I<LocalDatabase>().getMovementsById(widget.id);
-
-  //   final test = data[0].lat;
-  //   final test2 = data[0].long;
-  //   print("test $test $test2");
-  //   final polyLines = [
-  //     Polyline(
-  //       points: [
-  //         LatLng(double.parse(test), double.parse(test2)),
-  //         LatLng(double.parse(test), double.parse(test2)),
-  //         LatLng(double.parse(test), double.parse(test2)),
-  //       ],
-  //       strokeWidth: 4,
-  //       color: Colors.amber,
-  //     ),
-  //   ];
-  //   // await Future<void>.delayed(const Duration(seconds: 1));
-  //   return polyLines;
-  // }
+  final _screenShotController = ScreenshotController(); // 스크린샷 컨트롤러
 
   List<Polyline> getPolylines(datas) {
     List<LatLng> points = <LatLng>[];
@@ -101,92 +86,96 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 8),
-          child: FutureBuilder<List>(
-            future: GetIt.I<LocalDatabase>().getMovementsById(id),
-            builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-              debugPrint('snapshot: ${snapshot.hasData}');
-              if (snapshot.hasData) {
-                final data = snapshot.data![0];
-                return Column(
-                  children: [
-                    Flexible(
-                      child: FlutterMap(
-                        options: MapOptions(
-                          center: LatLng(
-                            double.parse(data.lat),
-                            double.parse(data.long),
+        child: Screenshot(
+          controller: _screenShotController,
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 8),
+            child: FutureBuilder<List>(
+              future: GetIt.I<LocalDatabase>().getMovementsById(id),
+              builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+                debugPrint('snapshot: ${snapshot.hasData}');
+                if (snapshot.hasData) {
+                  final data = snapshot.data![0];
+                  return Column(
+                    children: [
+                      Flexible(
+                        child: FlutterMap(
+                          options: MapOptions(
+                            center: LatLng(
+                              double.parse(data.lat),
+                              double.parse(data.long),
+                            ),
+                            zoom: 16,
+                            onTap: (tapPosition, point) {
+                              setState(() {
+                                debugPrint('onTap');
+                                // polylines = getPolylines();
+                              });
+                            },
                           ),
-                          zoom: 15,
-                          onTap: (tapPosition, point) {
-                            setState(() {
-                              debugPrint('onTap');
-                              // polylines = getPolylines();
-                            });
-                          },
+                          children: [
+                            TileLayer(
+                              urlTemplate:
+                                  'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                              userAgentPackageName:
+                                  'dev.fleaflet.flutter_map.example',
+                            ),
+                            // PolylineLayer(
+                            //   polylines: [
+                            //     Polyline(
+                            //         points: points,
+                            //         strokeWidth: 4,
+                            //         color: Colors.purple),
+                            //   ],
+                            // ),
+                            // PolylineLayer(
+                            //   polylines: [
+                            //     Polyline(
+                            //       points: pointsGradient,
+                            //       strokeWidth: 4,
+                            //       gradientColors: [
+                            //         const Color(0xffE40203),
+                            //         const Color(0xffFEED00),
+                            //         const Color(0xff007E2D),
+                            //       ],
+                            //     ),
+                            //   ],
+                            // ),
+                            PolylineLayer(
+                              polylines: getPolylines(snapshot.data),
+                              polylineCulling: true,
+                            ),
+                          ],
                         ),
+                      ),
+                      Row(
                         children: [
-                          TileLayer(
-                            urlTemplate:
-                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            userAgentPackageName:
-                                'dev.fleaflet.flutter_map.example',
-                          ),
-                          // PolylineLayer(
-                          //   polylines: [
-                          //     Polyline(
-                          //         points: points,
-                          //         strokeWidth: 4,
-                          //         color: Colors.purple),
-                          //   ],
-                          // ),
-                          // PolylineLayer(
-                          //   polylines: [
-                          //     Polyline(
-                          //       points: pointsGradient,
-                          //       strokeWidth: 4,
-                          //       gradientColors: [
-                          //         const Color(0xffE40203),
-                          //         const Color(0xffFEED00),
-                          //         const Color(0xff007E2D),
-                          //       ],
-                          //     ),
-                          //   ],
-                          // ),
-                          PolylineLayer(
-                            polylines: getPolylines(snapshot.data),
-                            polylineCulling: true,
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true, // 이게 있어야 위로 밀림
+                                  builder: (_) {
+                                    return RecordDetailModal();
+                                  },
+                                );
+                              },
+                              child: Text("detail"),
+                            ),
                           ),
                         ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true, // 이게 있어야 위로 밀림
-                                builder: (_) {
-                                  return RecordDetailModal();
-                                },
-                              );
-                            },
-                            child: Text("detail"),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                );
-              }
+                      )
+                    ],
+                  );
+                }
 
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -233,10 +222,45 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
   }
 
   Future<dynamic> _showdialog(BuildContext context) {
-    Future<PickedFile?> _takePicture() async {
+    late File? _storedImage = null;
+    String test;
+
+    Future<File?> _takePicture() async {
       final picker = await ImagePicker();
       final imageFile = await picker.pickImage(
           source: ImageSource.camera, maxHeight: 600, maxWidth: 600);
+
+      setState(() {
+        _storedImage = File(imageFile!.path);
+        test = _storedImage.toString();
+      });
+
+      print('ddddddddd ${_storedImage.toString()}');
+    }
+
+    Widget _showImage() {
+      // return Image.file(_storedImage);
+      if (_storedImage == null) {
+        return Container();
+      } else {
+        return Expanded(
+          child: Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/ad.png'),
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.topCenter,
+              ),
+            ),
+            child: Text("YOUR TEXT"),
+          ),
+        );
+        // return Container(
+        //   child: Image.file(_storedImage!),
+        // );
+      }
     }
 
     return showDialog(
@@ -251,17 +275,37 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    _showdialogSns(context);
+                  onPressed: () async {
+                    const _shareText = '지도 공유';
+                    final _screenshot = await _screenShotController.capture(
+                        delay: const Duration(milliseconds: 10));
+
+                    print("_screenshot $_screenshot");
+
+                    if (_screenshot != null) {
+                      final _documentDirectoryPath =
+                          await getApplicationDocumentsDirectory();
+                      final imagePath = await File(
+                              '${_documentDirectoryPath.path}/screenshot.png')
+                          .create();
+                      await imagePath.writeAsBytes(_screenshot);
+                      await Share.shareFiles([imagePath.path],
+                          text: _shareText);
+                    }
+
+                    // _showdialogSns(context);
                   },
                   child: Text("지도 경로"), // 추후
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await _takePicture();
+                    final test = await _takePicture();
+                    print("ddddddddddd $test");
                   },
                   child: Text("사진 촬영"), // 카메라 연결
-                )
+                ),
+                // if (_storedImage != null)
+                _showImage(),
               ],
             ),
           )
@@ -277,3 +321,24 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
     );
   }
 }
+
+// Future<List<Polyline>> getPolylines() async {
+//   final data = await GetIt.I<LocalDatabase>().getMovementsById(widget.id);
+
+//   final test = data[0].lat;
+//   final test2 = data[0].long;
+//   print("test $test $test2");
+//   final polyLines = [
+//     Polyline(
+//       points: [
+//         LatLng(double.parse(test), double.parse(test2)),
+//         LatLng(double.parse(test), double.parse(test2)),
+//         LatLng(double.parse(test), double.parse(test2)),
+//       ],
+//       strokeWidth: 4,
+//       color: Colors.amber,
+//     ),
+//   ];
+//   // await Future<void>.delayed(const Duration(seconds: 1));
+//   return polyLines;
+// }

@@ -50,7 +50,7 @@ android {
         // minSdkVersion flutter.minSdkVersion
         // minSdkVersion 33
         // minSdkVersion 18
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

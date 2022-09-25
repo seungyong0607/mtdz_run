@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mtdz_run/database/drift_database.dart';
 import 'package:mtdz_run/main/MainPage.dart';
 import 'package:mtdz_run/main/SliderPage.dart';
-import 'package:mtdz_run/model/Movements.dart';
+// import 'package:mtdz_run/model/Movements.dart';
 import 'package:mtdz_run/mypage/MyPage.dart';
 import 'package:mtdz_run/mypage/RecordDetailPage.dart';
 import 'package:mtdz_run/mypage/RecordPage.dart';
