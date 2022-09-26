@@ -17,85 +17,89 @@ class _TopPartState extends State<TopPart> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        GetX<Controller>(
-          builder: (_) => CustomCircleAvatar(
-            mater: controller.user().mater.toDouble(),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
+    return SizedBox(
+      width: double.infinity,
+      height: 160,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GetX<Controller>(
+            builder: (_) => CustomCircleAvatar(
+              mater: controller.user().mater.toDouble(),
             ),
-            border: Border.all(
-              width: 1,
-              color: Colors.black,
-            ),
-            boxShadow: const [
-              BoxShadow(
-                // color: Colors.grey[500],
-                offset: Offset(2.0, 2.0),
-                blurRadius: 2.0,
-                spreadRadius: 1.0,
-              ),
-              BoxShadow(
-                color: Colors.white,
-                offset: Offset(-2.0, -2.0),
-                blurRadius: 4.0,
-                spreadRadius: 1.0,
-              ),
-            ],
           ),
-          child: Container(
-            width: 200,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const SizedBox(
-                  width: 20,
-                  child: Icon(
-                    Icons.currency_bitcoin,
-                    color: Colors.black,
-                  ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(10),
+              ),
+              border: Border.all(
+                width: 1,
+                color: Colors.black,
+              ),
+              boxShadow: const [
+                BoxShadow(
+                  // color: Colors.grey[500],
+                  offset: Offset(2.0, 2.0),
+                  blurRadius: 2.0,
+                  spreadRadius: 1.0,
                 ),
-                GetX<Controller>(
-                  builder: (_) => _CustomText(
-                    text: '${controller.user().coin}',
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                  child: Icon(
-                    Icons.home_repair_service,
-                    color: Colors.black,
-                  ),
-                ),
-                GetX<Controller>(
-                  builder: (_) => _CustomText(
-                    text: '${controller.user().box}',
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                  child: Icon(
-                    Icons.key_outlined,
-                    color: Colors.black,
-                  ),
-                ),
-                GetX<Controller>(
-                  builder: (_) => _CustomText(
-                    text: '${controller.user().key}',
-                  ),
+                BoxShadow(
+                  color: Colors.white,
+                  offset: Offset(-2.0, -2.0),
+                  blurRadius: 4.0,
+                  spreadRadius: 1.0,
                 ),
               ],
             ),
-          ),
-        )
-      ],
+            child: SizedBox(
+              width: 200,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const SizedBox(
+                    width: 20,
+                    child: Icon(
+                      Icons.currency_bitcoin,
+                      color: Colors.black,
+                    ),
+                  ),
+                  GetX<Controller>(
+                    builder: (_) => _CustomText(
+                      text: '${controller.user().coin}',
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                    child: Icon(
+                      Icons.home_repair_service,
+                      color: Colors.black,
+                    ),
+                  ),
+                  GetX<Controller>(
+                    builder: (_) => _CustomText(
+                      text: '${controller.user().box}',
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                    child: Icon(
+                      Icons.key_outlined,
+                      color: Colors.black,
+                    ),
+                  ),
+                  GetX<Controller>(
+                    builder: (_) => _CustomText(
+                      text: '${controller.user().key}',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

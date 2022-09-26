@@ -215,45 +215,45 @@ class _RunDetailState extends State<RunDetail> {
     );
 
     // final location = await Geolocator.getCurrentPosition();
-    _getPositionSubscription =
-        Geolocator.getPositionStream().listen((position) {
-      print("DDSDSD ${position.latitude}");
-      GetIt.I<LocalDatabase>().updateRecord(
-        MovementsCompanion(
-          id: Value(tableId),
-          lat: Value(position.latitude.toString()),
-          long: Value(position.longitude.toString()),
-          speed: Value(position.speed.toStringAsFixed(2)),
-        ),
-      );
+    _getPositionSubscription = Geolocator.getPositionStream().listen(
+      (position) {
+        GetIt.I<LocalDatabase>().updateRecord(
+          MovementsCompanion(
+            id: Value(tableId),
+            lat: Value(position.latitude.toString()),
+            long: Value(position.longitude.toString()),
+            speed: Value(
+              position.speed.toStringAsFixed(2),
+            ),
+          ),
+        );
 
-      if (_status == 'walking') {
-        // 여기 들어감
+        if (_status == 'walking') {
+          meterTemp = (tempTime * double.parse(speedInMps.toStringAsFixed(2)));
 
-        meterTemp = (tempTime * double.parse(speedInMps.toStringAsFixed(2)));
+          setState(() {
+            speedInMps = position.speed;
+            tempTime = 0;
+            meterTemp;
+            meter += meterTemp;
+            meterGauge += meterTemp;
+            boxGaugeValue += meterTemp * 2;
+            keyGaugeValue += meterTemp * 3;
+          });
 
-        setState(() {
-          speedInMps = position.speed;
-          tempTime = 0;
-          meterTemp;
-          meter += meterTemp;
-          meterGauge += meterTemp;
-          boxGaugeValue += meterTemp * 2;
-          keyGaugeValue += meterTemp * 3;
-        });
+          // controller.meterUpdate(meterTemp);
 
-        // controller.meterUpdate(meterTemp);
-
-        checkMeter();
-        checkMeterGauge();
-      } else {
-        setState(() {
-          speedInMps = 0.0;
-          tempTime = 0;
-          // meter = (5 * double.parse(speedInMps.toStringAsFixed(2)));
-        });
-      }
-    });
+          checkMeter();
+          checkMeterGauge();
+        } else {
+          setState(() {
+            speedInMps = 0.0;
+            tempTime = 0;
+            // meter = (5 * double.parse(speedInMps.toStringAsFixed(2)));
+          });
+        }
+      },
+    );
 
     setState(() {
       _position = position;
@@ -304,15 +304,12 @@ class _RunDetailState extends State<RunDetail> {
   }
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
-    print("2222222222 $event");
     setState(() {
       _status = event.status;
     });
   }
 
   void onPedestrianStatusError(error) {
-    print("333333333 $error");
-
     print('onPedestrianStatusError: $error');
     setState(() {
       _status = 'Pedestrian Status not available';

@@ -6,7 +6,9 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mtdz_run/database/drift_database.dart';
+import 'package:mtdz_run/mypage/RecordCameraViewer.dart';
 import 'package:mtdz_run/mypage/RecordModal.dart';
+import 'package:mtdz_run/mypage/RecordTextCard.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
@@ -88,94 +90,104 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
       body: SafeArea(
         child: Screenshot(
           controller: _screenShotController,
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 8),
-            child: FutureBuilder<List>(
-              future: GetIt.I<LocalDatabase>().getMovementsById(id),
-              builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-                debugPrint('snapshot: ${snapshot.hasData}');
-                if (snapshot.hasData) {
-                  final data = snapshot.data![0];
-                  return Column(
-                    children: [
-                      Flexible(
-                        child: FlutterMap(
-                          options: MapOptions(
-                            center: LatLng(
-                              double.parse(data.lat),
-                              double.parse(data.long),
-                            ),
-                            zoom: 16,
-                            onTap: (tapPosition, point) {
-                              setState(() {
-                                debugPrint('onTap');
-                                // polylines = getPolylines();
-                              });
-                            },
-                          ),
-                          children: [
-                            TileLayer(
-                              urlTemplate:
-                                  'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                              userAgentPackageName:
-                                  'dev.fleaflet.flutter_map.example',
-                            ),
-                            // PolylineLayer(
-                            //   polylines: [
-                            //     Polyline(
-                            //         points: points,
-                            //         strokeWidth: 4,
-                            //         color: Colors.purple),
-                            //   ],
-                            // ),
-                            // PolylineLayer(
-                            //   polylines: [
-                            //     Polyline(
-                            //       points: pointsGradient,
-                            //       strokeWidth: 4,
-                            //       gradientColors: [
-                            //         const Color(0xffE40203),
-                            //         const Color(0xffFEED00),
-                            //         const Color(0xff007E2D),
-                            //       ],
-                            //     ),
-                            //   ],
-                            // ),
-                            PolylineLayer(
-                              polylines: getPolylines(snapshot.data),
-                              polylineCulling: true,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
+          child: Stack(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 8),
+                child: FutureBuilder<List>(
+                  future: GetIt.I<LocalDatabase>().getMovementsById(id),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<List> snapshot) {
+                    debugPrint('snapshot: ${snapshot.hasData}');
+                    if (snapshot.hasData) {
+                      final data = snapshot.data![0];
+                      return Column(
                         children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true, // 이게 있어야 위로 밀림
-                                  builder: (_) {
-                                    return RecordDetailModal();
-                                  },
-                                );
-                              },
-                              child: Text("detail"),
+                          Flexible(
+                            child: FlutterMap(
+                              options: MapOptions(
+                                center: LatLng(
+                                  double.parse(data.lat),
+                                  double.parse(data.long),
+                                ),
+                                zoom: 16,
+                                onTap: (tapPosition, point) {
+                                  setState(() {
+                                    debugPrint('onTap');
+                                    // polylines = getPolylines();
+                                  });
+                                },
+                              ),
+                              children: [
+                                TileLayer(
+                                  urlTemplate:
+                                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                  userAgentPackageName:
+                                      'dev.fleaflet.flutter_map.example',
+                                ),
+                                // PolylineLayer(
+                                //   polylines: [
+                                //     Polyline(
+                                //         points: points,
+                                //         strokeWidth: 4,
+                                //         color: Colors.purple),
+                                //   ],
+                                // ),
+                                // PolylineLayer(
+                                //   polylines: [
+                                //     Polyline(
+                                //       points: pointsGradient,
+                                //       strokeWidth: 4,
+                                //       gradientColors: [
+                                //         const Color(0xffE40203),
+                                //         const Color(0xffFEED00),
+                                //         const Color(0xff007E2D),
+                                //       ],
+                                //     ),
+                                //   ],
+                                // ),
+                                PolylineLayer(
+                                  polylines: getPolylines(snapshot.data),
+                                  polylineCulling: true,
+                                ),
+                              ],
                             ),
                           ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true, // 이게 있어야 위로 밀림
+                                      builder: (_) {
+                                        return RecordDetailModal();
+                                      },
+                                    );
+                                  },
+                                  child: Text("detail"),
+                                ),
+                              ),
+                            ],
+                          )
                         ],
-                      )
-                    ],
-                  );
-                }
+                      );
+                    }
 
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+              ),
+              Positioned(
+                right: 20,
+                bottom: 80,
+                child: RecordTextCard(),
+              ),
+            ],
           ),
         ),
       ),
@@ -235,7 +247,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
         test = _storedImage.toString();
       });
 
-      print('ddddddddd ${_storedImage.toString()}');
+      // print('ddddddddd ${_storedImage.toString()}');
     }
 
     Widget _showImage() {
@@ -299,8 +311,10 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    final test = await _takePicture();
-                    print("ddddddddddd $test");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => RecordCameraViewer()),
+                    );
                   },
                   child: Text("사진 촬영"), // 카메라 연결
                 ),

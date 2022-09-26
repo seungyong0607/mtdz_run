@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mtdz_run/common/CustomAppbar.dart';
-import 'package:mtdz_run/common/TopPart.dart';
 import 'package:mtdz_run/main/CustomImageSlider.dart';
 import 'package:mtdz_run/main/MainGaugePart.dart';
 import 'package:mtdz_run/main/MainPageFooterPart.dart';
 
 class SliderPage extends StatefulWidget {
-  SliderPage({
+  const SliderPage({
     Key? key,
   }) : super(key: key);
 
@@ -95,9 +93,9 @@ class _SliderPageState extends State<SliderPage> {
 
   void onChange(index, reason) {
     setState(() {
-      shoesList.forEach((element) {
+      for (var element in shoesList) {
         element['selected'] = false;
-      });
+      }
       selectedIndex = index;
       shoesList[index]['selected'] = true;
       selectedItem = shoesList[index];
@@ -107,7 +105,6 @@ class _SliderPageState extends State<SliderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppbar(title: "Main"),
       body: Column(
         children: <Widget>[
           const SizedBox(height: 10),
