@@ -29,7 +29,7 @@ class CustomCircleAvatar extends StatelessWidget {
                 child: Icon(Icons.account_circle, size: 40.0),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 5, top: 2),
+                padding: const EdgeInsets.only(left: 7, top: 2),
                 child: Text(
                   "${mater}",
                   style: const TextStyle(

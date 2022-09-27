@@ -6,7 +6,7 @@ class RecordTextCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const ts = TextStyle(
-      color: Colors.white,
+      color: Colors.black,
       decoration: TextDecoration.none,
       fontSize: 14,
     );

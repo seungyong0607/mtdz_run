@@ -21,26 +21,26 @@ class GaugePart extends StatelessWidget {
       width: double.infinity,
       child: Column(
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  debugPrint("debugPrint");
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.red[700],
-                ),
-                child: const Text("러너스하이 발동 버튼"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  debugPrint("debugPrint");
-                },
-                child: const Text("러너스하이 예약 버튼"),
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //   children: [
+          //     ElevatedButton(
+          //       onPressed: () {
+          //         debugPrint("debugPrint");
+          //       },
+          //       style: ElevatedButton.styleFrom(
+          //         primary: Colors.red[700],
+          //       ),
+          //       child: const Text("러너스하이 발동 버튼"),
+          //     ),
+          //     ElevatedButton(
+          //       onPressed: () {
+          //         debugPrint("debugPrint");
+          //       },
+          //       child: const Text("러너스하이 예약 버튼"),
+          //     ),
+          //   ],
+          // ),
           Container(
             padding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
             child: Row(

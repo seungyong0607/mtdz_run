@@ -41,8 +41,8 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
         points: points,
         strokeWidth: 4,
         gradientColors: [
-          const Color(0xffE40203),
-          const Color(0xffFEED00),
+          // const Color(0xffE40203),
+          // const Color(0xffFEED00),
           const Color(0xff007E2D),
         ],
       ),
@@ -58,8 +58,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments;
-    final id = int.parse(args.toString());
+    final args = ModalRoute.of(context)!.settings.arguments;
 
     // final points = <LatLng>[
     //   LatLng(37.5270425, 126.9667016),
@@ -96,7 +95,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
                 padding:
                     const EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 8),
                 child: FutureBuilder<List>(
-                  future: GetIt.I<LocalDatabase>().getMovementsById(id),
+                  future: GetIt.I<LocalDatabase>().getMovementsById(1),
                   builder:
                       (BuildContext context, AsyncSnapshot<List> snapshot) {
                     debugPrint('snapshot: ${snapshot.hasData}');

@@ -8,60 +8,69 @@ class RecordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Record Page"),
-          centerTitle: true,
-          elevation: 0,
-        ),
-        body: Column(
-          children: [
-            _RecordDetailInfo(),
-            Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 16.0, right: 16.0, top: 12),
-                child: FutureBuilder<List<Record>>(
-                    future: GetIt.I<LocalDatabase>().getRecord(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-
-                      if (snapshot.hasData && snapshot.data!.isEmpty) {
-                        return const Center(
-                          child: Text("There is no record."),
-                        );
-                      }
-
-                      return ListView.separated(
-                        itemCount: snapshot.data!.length,
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            height: 2.0,
-                          );
-                        },
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(
-                                  '/recordDetailPage',
-                                  arguments: index + 1);
-                            },
-                            child: Container(
-                              child: _RecordCard(
-                                activeTime: DateTime.now(),
-                                startDateTime: "12/07 18:36",
-                                meter: 3,
-                              ),
-                            ),
-                          );
-                        },
+      appBar: AppBar(
+        title: const Text("Record Page"),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          _RecordDetailInfo(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12),
+              child: FutureBuilder<List<Record>>(
+                  future: GetIt.I<LocalDatabase>().getRecord(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    }),
-              ),
-            )
-          ],
-        ));
+                    }
+
+                    if (snapshot.hasData && snapshot.data!.isEmpty) {
+                      return const Center(
+                        child: Text("There is no record."),
+                      );
+                    }
+
+                    return ListView.separated(
+                      itemCount: snapshot.data!.length,
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          height: 2.0,
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        DateTime startTime = DateTime.parse(
+                            snapshot.data![index].startTime.toString());
+
+                        String startDateTime =
+                            "${startTime.month}/${startTime.day}/${startTime.year} ${startTime.hour}:${startTime.second}";
+
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              '/recordDetailPage',
+                              arguments: snapshot.data![index].id,
+                            );
+                          },
+                          child: SizedBox(
+                            child: _RecordCard(
+                              activeTime: DateTime.now(),
+                              startDateTime: startDateTime,
+                              meter: 3,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -81,28 +90,46 @@ class _RecordCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 100,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text("$startDateTime"),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.map, size: 60),
-              Expanded(child: Text("00:01:20 $meter km")),
-              Icon(Icons.arrow_forward_ios_sharp),
-            ],
-          ),
-        ],
-      ),
+      child: FutureBuilder<List<Record>>(
+          future: GetIt.I<LocalDatabase>().getRecord(),
+          builder: (context, snapshot) {
+            final list = snapshot.data;
+
+            int metar = 0;
+            int items = 0;
+            double times = 0.0;
+
+            // list!.forEach((element, index) {
+            //   print(element, index);
+            // });
+
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Text("$startDateTime"),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.map, size: 60),
+                    Expanded(child: Text("00:01:20 $meter km")),
+                    Icon(Icons.arrow_forward_ios_sharp),
+                  ],
+                ),
+              ],
+            );
+          }),
     );
   }
 }
 
 class _RecordDetailInfo extends StatelessWidget {
-  const _RecordDetailInfo({super.key});
+  // final List<Record> record;
+  const _RecordDetailInfo({
+    super.key,
+    // required this.record,
+  });
 
   @override
   Widget build(BuildContext context) {
